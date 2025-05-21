@@ -44,6 +44,15 @@ else
   echo "→ Already have Oh-My-Zsh at $ORIGINAL_HOME/.oh-my-zsh"
 fi
 
+echo
+echo "=== Installing Oh-My-Zsh for root (if missing) ==="
+if [[ ! -d "/root/.oh-my-zsh" ]]; then
+  RUNZSH=no CHSH=no KEEP_ZSHRC=yes \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+else
+  echo "→ Already have Oh-My-Zsh at /root/.oh-my-zsh"
+fi
+
 # 4) Prepare custom plugin dirs
 USER_OMZ_CUSTOM="$ORIGINAL_HOME/.oh-my-zsh/custom"
 ROOT_OMZ_CUSTOM="/root/.oh-my-zsh/custom"
