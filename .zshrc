@@ -18,7 +18,7 @@ source $ZSH/oh-my-zsh.sh
 eval "$(direnv hook zsh)"
 
 # Oh-My-Zsh bundled community plugins
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
 source $ZSH/oh-my-zsh.sh
 
 # ─── completion setup ───────────────────────────────────────────────────────────
@@ -53,6 +53,15 @@ bindkey '^[[6~' end-of-buffer-or-history
 bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
 bindkey '^[[Z' undo
+
+# ─── fzf history keybindings ──────────────────────────────────────────────────
+if [[ $- == *i* ]] && type fzf-history-widget &>/dev/null; then
+  autoload -Uz fzf-history-widget
+  zle -N fzf-history-widget
+  bindkey '^R' fzf-history-widget  # Ctrl+R: default fuzzy history search
+  bindkey '^F' fzf-history-widget  # Ctrl+F: also map to history search
+fi
+
 
 # ─── completion styling ────────────────────────────────────────────────────────
 zstyle ':completion:*:*:*:*:*' menu select

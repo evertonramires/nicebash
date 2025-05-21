@@ -10,4 +10,7 @@ These Zsh settings are basically a copy of the default configuration that comes 
 ```
 sudo chmod +x install_nicebash.sh
 sudo ./install_nicebash.sh
+exec zsh
 ```
+
+- ctrl+F to open bash command history
