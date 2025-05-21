@@ -122,6 +122,7 @@ if [[ -f "$ROOT_ZSHRC" ]]; then
   echo "   backed up to ${ROOT_ZSHRC}.bak.$timestamp"
 fi
 cp "$SCRIPT_DIR/.zshrc" "$ROOT_ZSHRC"
+cp -r "$USER_OMZ_CUSTOM/.." "/root/.oh-my-zsh"
 echo "   installed → $ROOT_ZSHRC"
 
 echo
