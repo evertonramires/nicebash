@@ -125,4 +125,16 @@ cp "$SCRIPT_DIR/.zshrc" "$ROOT_ZSHRC"
 echo "   installed → $ROOT_ZSHRC"
 
 echo
+echo "=== Setting Zsh as default shell for $ORIGINAL_USER and root ==="
+
+ZSH_PATH="$(command -v zsh)"
+
+if [[ -x "$ZSH_PATH" ]]; then
+  chsh -s "$ZSH_PATH" "$ORIGINAL_USER" && echo "→ $ORIGINAL_USER shell set to Zsh"
+  chsh -s "$ZSH_PATH" root && echo "→ root shell set to Zsh"
+else
+  echo "❌ Could not find Zsh binary to set as default shell."
+fi
+
+echo
 echo "✔ Installation complete! Open a new shell or run 'exec zsh'."
