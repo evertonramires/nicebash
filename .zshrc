@@ -251,33 +251,33 @@ if [ -f /etc/zsh_command_not_found ]; then
     . /etc/zsh_command_not_found
 fi
 
-# Capture the time before command starts
+# Capture the start time and command
 preexec() {
-  __command_start_time=$EPOCHREALTIME
+  command_start_time=$EPOCHREALTIME
+  last_command="$1"
 }
 
-# Evaluate after each command runs
+# Run after command ends
 precmd() {
   local exit_code=$?
   local end_time=$EPOCHREALTIME
 
-  # Only calculate if we have a start time
-  if [[ -n "$__command_start_time" ]]; then
-    local elapsed_time=$(echo "$end_time - $__command_start_time" | bc)
+  if [[ -n "$command_start_time" ]]; then
+    local elapsed_time=$(echo "$end_time - $command_start_time" | bc)
 
     if (( exit_code != 0 )); then
       if (( $(echo "$elapsed_time > 30" | bc -l) )); then
-        echo -ne "\a"; sleep 0.2 #long failure
+        notify-send "FAILED" "$last_command" -u critical
+        echo -ne "\a"; sleep 0.2
         echo -ne "\a"; sleep 0.2
         echo -ne "\a"; sleep 0.2
         echo -ne "\a"; sleep 0.2
         echo -ne "\a"
-      else
-        # echo -ne "\a"       # quick failure 
       fi
     else
       if (( $(echo "$elapsed_time > 30" | bc -l) )); then
-        echo -ne "\a"; sleep 0.2 #long success
+        notify-send "SUCCEEDED" "$last_command" -u low
+        echo -ne "\a"; sleep 0.2
         echo -ne "\a"; sleep 0.2
         echo -ne "\a"
       fi
