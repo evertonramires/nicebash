@@ -9,18 +9,14 @@ export LC_CTYPE=en_US.UTF-8
 
 # Oh-My-Zsh
 ZSH_THEME="robbyrussell"
-plugins=(git)
+# Bundled + community plugins (autosuggestions & syntax-highlighting are sourced directly below)
+plugins=(git fzf fzf-tab)
 
 # ←── SOURCE Oh-My-Zsh so plugins actually load
 source $ZSH/oh-my-zsh.sh
 
 # direnv hook
 eval "$(direnv hook zsh)"
-
-# Oh-My-Zsh bundled community plugins
-plugins=(git fzf fzf-tab)
-# plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
-source $ZSH/oh-my-zsh.sh
 
 # ─── completion setup ───────────────────────────────────────────────────────────
 autoload -Uz compinit
@@ -251,38 +247,3 @@ fi
 if [ -f /etc/zsh_command_not_found ]; then
     . /etc/zsh_command_not_found
 fi
-
-# Capture the start time and command
-preexec() {
-  command_start_time=$EPOCHREALTIME
-  last_command="$1"
-}
-
-# Run after command ends
-precmd() {
-  local exit_code=$?
-  local end_time=$EPOCHREALTIME
-
-  if [[ -n "$command_start_time" ]]; then
-    local elapsed_time=$(echo "$end_time - $command_start_time" | bc)
-
-    if (( exit_code != 0 )); then
-      if (( $(echo "$elapsed_time > 30" | bc -l) )); then
-        notify-send "FAILED" "$last_command" -u critical
-        echo -ne "\a"; sleep 0.2
-        echo -ne "\a"; sleep 0.2
-        echo -ne "\a"; sleep 0.2
-        echo -ne "\a"; sleep 0.2
-        echo -ne "\a"
-      fi
-    else
-      if (( $(echo "$elapsed_time > 30" | bc -l) )); then
-        notify-send "SUCCEEDED" "$last_command" -u low
-        echo -ne "\a"; sleep 0.2
-        echo -ne "\a"; sleep 0.2
-        echo -ne "\a"
-      fi
-    fi
-  fi
-}
-
