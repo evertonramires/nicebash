@@ -204,7 +204,25 @@ esac
 # command's stdout/stderr, so pipes, redirections and $(...) captures are
 # unaffected.
 preexec() {
+    # stamp-wrapped commands prefix every line themselves — skip the single stamp
+    [[ $1 == stamp || $1 == stamp\ * ]] && return
     print -Pn -- "%F{%(#.blue.green)}[%D{%H:%M:%S}]%f "
+}
+
+# Per-line variant for long-running commands, e.g. `stamp ping 8.8.8.8`:
+# prefixes every output line (stderr included) with its [HH:MM:SS] arrival
+# time. Stamps only when stdout is the terminal — piped or redirected, the
+# command runs untouched, so downstream data stays clean.
+stamp() {
+    if [ -t 1 ]; then
+        "$@" 2>&1 | while IFS= read -r line || [ -n "$line" ]; do
+            print -Pn -- "%F{%(#.blue.green)}[%D{%H:%M:%S}]%f "
+            print -r -- "$line"
+        done
+        return "${pipestatus[1]}"
+    else
+        "$@"
+    fi
 }
 
 precmd() {
