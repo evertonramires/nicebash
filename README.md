@@ -14,3 +14,4 @@ exec zsh
 ```
 
 - ctrl+F to open bash command history
+- The prompt header shows a `[HH:MM:SS]` timestamp (24h format), so the scrollback tells roughly when each command was run — e.g. `┌──[14:32:05]─(user@host)-[~/path]`
