@@ -204,8 +204,10 @@ esac
 # command's stdout/stderr, so pipes, redirections and $(...) captures are
 # unaffected.
 preexec() {
-    # stamp-wrapped commands prefix every line themselves — skip the single stamp
-    [[ $1 == stamp || $1 == stamp\ * ]] && return
+    # stamp-wrapped commands prefix every line themselves — skip the single
+    # stamp ($3 is the expanded command, so alias-expanded stamps count too).
+    # A piped stamp command renders downstream output instead, so keep it.
+    [[ ($3 == stamp || $3 == stamp\ *) && $3 != *\|* ]] && return
     print -Pn -- "%F{%(#.blue.green)}[%D{%H:%M:%S}]%f "
 }
 
@@ -224,6 +226,11 @@ stamp() {
         "$@"
     fi
 }
+
+# Streaming commands that get per-line stamps by default. Aliases only expand
+# interactively, and stamp passes data through untouched when piped, so
+# scripts and pipelines are unaffected. Add your own the same way.
+alias ping='stamp ping'
 
 precmd() {
     print -Pnr -- "$TERM_TITLE"
