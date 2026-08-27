@@ -208,7 +208,8 @@ preexec() {
     # stamp ($3 is the expanded command, so alias-expanded stamps count too).
     # A piped stamp command renders downstream output instead, so keep it.
     [[ ($3 == stamp || $3 == stamp\ *) && $3 != *\|* ]] && return
-    print -Pn -- "%F{%(#.blue.green)}[%D{%H:%M:%S}]%f "
+    # stamp on its own line so column-aligned output (ls -l, tables) isn't shifted
+    print -P -- "%F{%(#.blue.green)}[%D{%H:%M:%S}]%f"
 }
 
 # Per-line variant for long-running commands, e.g. `stamp ping 8.8.8.8`:
