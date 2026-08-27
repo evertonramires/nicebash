@@ -198,18 +198,16 @@ xterm*|rxvt*|Eterm|aterm|kterm|gnome*|alacritty)
     ;;
 esac
 
-# Stamp each command's output with a [HH:MM:SS] finish time. Printed by the
-# shell between output and next prompt — display only, never on the command's
-# stdout/stderr, so pipes, redirections and $(...) captures are unaffected.
+# Prefix each command's output with a [HH:MM:SS] stamp of when Enter was
+# pressed, so it renders as "[14:32:05] the answer". Written straight to the
+# terminal by the shell before the command runs — display only, never on the
+# command's stdout/stderr, so pipes, redirections and $(...) captures are
+# unaffected.
 preexec() {
-    _CMD_WAS_EXECUTED=1
+    print -Pn -- "%F{%(#.blue.green)}[%D{%H:%M:%S}]%f "
 }
 
 precmd() {
-    if [ -n "$_CMD_WAS_EXECUTED" ]; then
-        unset _CMD_WAS_EXECUTED
-        print -P -- "%F{%(#.blue.green)}[%D{%H:%M:%S}]%f"
-    fi
     print -Pnr -- "$TERM_TITLE"
     if [ "$NEWLINE_BEFORE_PROMPT" = yes ]; then
         if [ -z "$_NEW_LINE_BEFORE_PROMPT" ]; then

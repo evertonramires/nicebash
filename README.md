@@ -14,4 +14,4 @@ exec zsh
 ```
 
 - ctrl+F to open bash command history
-- Each command's output is followed by a `[HH:MM:SS]` timestamp (24h format), so the scrollback tells when each command finished. It is rendered by the shell after the output, not written to stdout, so pipes, redirections and `$(...)` captures stay clean
+- Each command's output is prefixed with a `[HH:MM:SS]` timestamp (24h format) of when the command was sent, rendered as `[14:32:05] the answer`. It is drawn by the shell, not written to stdout, so pipes, redirections and `$(...)` captures stay clean
