@@ -14,5 +14,5 @@ exec zsh
 ```
 
 - ctrl+F to open bash command history
-- Each command's output is prefixed with a `[HH:MM:SS]` timestamp (24h format) of when the command was sent, rendered as `[14:32:05] the answer`. It is drawn by the shell, not written to stdout, so pipes, redirections and `$(...)` captures stay clean
+- Each command's output is preceded by a `[HH:MM:SS]` timestamp (24h format) of when the command was sent, on its own line so column-aligned output like `ls -l` isn't shifted. It is drawn by the shell, not written to stdout, so pipes, redirections and `$(...)` captures stay clean
 - For long-running commands, `stamp <command>` prefixes **every** output line with its arrival time. Stamping auto-disables when the output is piped or redirected, so `stamp ping 8.8.8.8 | grep ttl` still receives clean data. `ping` is aliased to `stamp ping` out of the box, so a bare `ping 8.8.8.8` gets per-line timestamps — add aliases for other streaming commands the same way
